@@ -22,6 +22,38 @@ var symbols = ['bus', 'bus', 'bell', 'bell', 'bug', 'bug', 'child', 'child', 'fl
 		rank1thumbs = gameCardsQTY + 10;
 
 /**
+* @description Timer countdown of 60 sec
+* @param [.click]  - On click of timer countdown begins
+* @returns [startGame] When countdown reach 0 restart game screen appears
+*/
+$("#startclock").click( function(){
+   var counter = 60;
+   setInterval(function() {
+     counter--;
+      if (counter >= 0) {
+         span = document.getElementById("count");
+         span.innerHTML = counter;
+      }
+      if (counter === 0) {
+        swal({
+		title: 'Out of Time!',
+		confirmButtonColor: '#02ccba',
+		confirmButtonText: 'Need another brain-try!'
+		}).then(function(isConfirm) {
+      if (isConfirm) {
+            startGame();
+        }
+      });
+      function stopCount() {
+    	  clearTimeout(counter);
+    	  timer_is_on = 60;
+		};
+       }
+     }, 1000);
+});
+
+
+/**
 * @description Card shuffle Here the cards are shuffled according to this setup and code http://stackoverflow.com/a/2450976
 * @param [array]  - Array is parsed
 * @returns [array] Array values are shuffled 
