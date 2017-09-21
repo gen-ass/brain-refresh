@@ -126,3 +126,8 @@ h1 {
 .font-color {
   color: white;
 }
+
+#count {
+  padding-left: 20%;
+  display: block;
+}
