@@ -24,35 +24,6 @@ var symbols = ['bus', 'bus', 'bell', 'bell', 'bug', 'bug', 'child', 'child', 'fl
 		var t;
 		var timer_is_on = 0;
 
-
-/**
-* @description Timer countdown of 60 sec
-* @param [.click]  - ArrOn click of timer countdown begin
-* @returns [startGame] When countdown rech 0 restart game screen appears
-*/
-/*$("#count").click( function(){
-   var counter = 120;
-   setInterval(function() {
-     counter--;
-      if (counter >= 0) {
-         span = document.getElementById("count");
-         span.innerHTML = counter;
-      }
-      if (counter === 0) {
-        swal({
-		title: 'Out of Time!',
-		confirmButtonColor: '#02ccba',
-		confirmButtonText: 'Need another brain-try!'
-		}).then(function(isConfirm) {
-      if (isConfirm) {
-            startGame();
-         }
-      	});
-       }
-     }, 50);
-});*/
-
-
 /**
 * @description Timer counts up
 * @param [.click]  - On click of timer countdown begin
