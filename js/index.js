@@ -167,7 +167,7 @@ var addCardListener = function() {
 * @param {click}  - User clicks in grid
 * @returns {open show} - Card is turned around and kept open.
 */
-$deck.find('.card:not(".match, .open")').on('click', function() {
+$deck.find('click', '.card:not(".match, .open")').on('click', function() {
 	if($('.show').length > 1) { return true; }
 
 	var $this = $(this),
@@ -182,26 +182,25 @@ $deck.find('.card:not(".match, .open")').on('click', function() {
 	*/
  	if (opened.length > 1) {
     	if (card === opened[0]) {
-      		$deck.find('.open').addClass('match');
-      	    setTimeout(function() {
-        	$deck.find('.match').data('click', false).removeClass('open show');
-      	}, delay);
+		 $deck.find('.open').addClass('match animated');
+		 setTimeout(function() {
+		 $deck.find('.match').removeClass('open show');
+     	}, delay);
       	match++;
-        return card;
-    } else {
-	    $deck.find('.open').addClass('notmatch');
-			setTimeout(function() {
-			$deck.find('.open');
-			}, delay);
-            setTimeout(function() {
-            $deck.find('.open').removeClass('open show notmatch');
-      }, delay);
+	} else {
+	      $deck.find('.open').addClass('notmatch');
+	      setTimeout(function() {
+	      $deck.find('.open');
+     	}, delay / 1.5);
+        setTimeout(function() {
+             $deck.find('.open').removeClass('open show notmatch');
+       }, delay);
     }
     opened = [];
-       moves++;
-	     setRating(moves);
-       $moveNum.html(moves);
-  	}
+    moves++;
+    setRating(moves);
+    $moveNum.html(moves);
+  }
 
 
 	/**
