@@ -17,17 +17,21 @@ var symbols = ['bus', 'bus', 'bell', 'bell', 'bug', 'bug', 'child', 'child', 'fl
 		$restart = $('.restart'),
 		delay = 800,
 		gameCardsQTY = symbols.length / 2,
-		rank3thumbs = gameCardsQTY + 2,
-		rank2thumbs = gameCardsQTY + 6,
-		rank1thumbs = gameCardsQTY + 10;
+		rank3thumbs = gameCardsQTY + 5,
+		rank2thumbs = gameCardsQTY + 10,
+		rank1thumbs = gameCardsQTY + 15;
+		var c = 0;
+		var t;
+		var timer_is_on = 0;
+
 
 /**
 * @description Timer countdown of 60 sec
-* @param [.click]  - On click of timer countdown begins
-* @returns [startGame] When countdown reach 0 restart game screen appears
+* @param [.click]  - ArrOn click of timer countdown begin
+* @returns [startGame] When countdown rech 0 restart game screen appears
 */
-$("#startclock").click( function(){
-   var counter = 60;
+/*$("#count").click( function(){
+   var counter = 120;
    setInterval(function() {
      counter--;
       if (counter >= 0) {
@@ -42,16 +46,41 @@ $("#startclock").click( function(){
 		}).then(function(isConfirm) {
       if (isConfirm) {
             startGame();
-        }
-      });
-      function stopCount() {
-    	  clearTimeout(counter);
-    	  timer_is_on = 60;
-		};
+         }
+      	});
        }
-     }, 1000);
-});
+     }, 50);
+});*/
 
+
+/**
+* @description Timer counts up
+* @param [.click]  - On click of timer countdown begin
+* @returns [startGame] Countdown will continue untill player wins
+*/
+function timedCount() {
+    document.getElementById("count").value = c;
+    c = c + 1;
+    t = setTimeout(function(){ timedCount() }, 1000);
+}
+
+function startCount() {
+    if (!timer_is_on) {
+        timer_is_on = 1;
+        timedCount();
+    }
+}
+
+function resetCount() {
+        stopCount();
+        c = 0;
+        startCount();
+}
+
+function stopCount() {
+    clearTimeout(t);
+    timer_is_on = 0;
+}
 
 /**
 * @description Card shuffle Here the cards are shuffled according to this setup and code http://stackoverflow.com/a/2450976
@@ -83,12 +112,12 @@ function startGame() {
   match = 0;
   moves = 0;
   $moveNum.text('0');
-  $ratingThumbs.removeClass('fa-thumbs-up-o').addClass('spinner');
+  $ratingThumbs.removeClass('fa-thumbs-up-o').addClass('fa-spinner');
 	for (var i = 0; i < cards.length; i++) {
 		$deck.append($('<li class="card"><i class="fa fa-' + cards[i] + '"></i></li>'))
 	}
 	addCardListener();
-};
+}
 
 
 /**
@@ -104,12 +133,10 @@ function setRating(moves) {
 	} else if (moves > rank2thumbs && moves < rank1thumbs) {
 		$ratingThumbs.eq(1).removeClass('fa-thumbs-up').addClass('fa-thumbs-up-o');
 		rating = 1;
-	} else if (moves > rank1thumbs) {
-		$ratingThumbs.eq(0).removeClass('fa-thumbs-up').addClass('fa-thumbs-up-o');
-		rating = 0;
-	}	
+	}
 	return { score: rating };
-};
+}
+
 
 /**
 * @description Game Completion: Moves are displayed and score
@@ -121,8 +148,9 @@ function endGame(moves, score) {
 		allowEscapeKey: false,
 		allowOutsideClick: false,
 		title: 'Congratulations! You Won!',
-		text: 'With ' + moves + ' Moves and ' + score + ' Thumbs.\n Great man!',
+		text: 'With ' + moves + ' Moves and ' + score + ' Thumbs.\n Great man!' + ' Total time : ' + c + ' seconds',
 		type: 'great',
+		showCancelButton: false,
 		confirmButtonColor: '#02ccba',
 		confirmButtonText: 'Need another brain-try!'
 	}).then(function(isConfirm) {
@@ -149,7 +177,7 @@ $restart.bind('click', function() {
     confirmButtonText: 'Yes, let me hav\'em!'
   }).then(function(isConfirm) {
     if (isConfirm) {
-      startGame();
+      startGame().load( '/index.js' );
     }
   })
 });
@@ -168,12 +196,12 @@ var addCardListener = function() {
 * @param {click}  - User clicks in grid
 * @returns {open show} - Card is turned around and kept open.
 */
-$deck.find('.card:not(".match, .open")').bind('click' , function() {
+$deck.find('.card:not(".match, .open")').on('click', function() {
 	if($('.show').length > 1) { return true; }
-	
+
 	var $this = $(this),
-			card = $this.context.innerHTML;
-  $this.addClass('open show');
+	card = $this.context.innerHTML;
+  	$this.addClass('open show');
 	opened.push(card);
 
     /**
@@ -181,27 +209,30 @@ $deck.find('.card:not(".match, .open")').bind('click' , function() {
 	* @param {.open}  - Second click occurs
 	* @returns {open show} - If the card has same value as in the index then card stays open. If the value is not the same as in index card closes
 	*/
-  if (opened.length > 1) {
-    if (card === opened[0]) {
-      $deck.find('.open').addClass('match');
-      setTimeout(function() {
-        $deck.find('.match').removeClass('open show ');
-      }, delay);
-      match++;
+ 	if (opened.length > 1) {
+    	if (card === opened[0]) {
+      		$deck.find('.open').addClass('match');
+      	    setTimeout(function() {
+        	$deck.find('.match').data('click', false).removeClass('open show');
+      	}, delay);
+      	match++;
+        return card;
     } else {
-      $deck.find('.open').addClass('notmatch');
+	    $deck.find('.open').addClass('notmatch');
 			setTimeout(function() {
-				$deck.find('.open');
-			}, delay / 0.5);
-      setTimeout(function() {
-        $deck.find('.open').removeClass('open show notmatch');
+			$deck.find('.open');
+			}, delay);
+            setTimeout(function() {
+            $deck.find('.open').removeClass('open show notmatch');
       }, delay);
     }
     opened = [];
        moves++;
-	   setRating(moves);
+	     setRating(moves);
        $moveNum.html(moves);
-  }
+  	}
+
+
 	/**
 	* @description Game ending: It all ends the game
 	* @param {score}  - Game score and thumbs are calculated and checked.
