@@ -10,6 +10,7 @@ var symbols = ['bus', 'bus', 'bell', 'bell', 'bug', 'bug', 'child', 'child', 'fl
 		opened = [],
 		match = 0,
 		moves = 0,
+    rankthumb = setRating(moves),
 		$deck = jQuery('.deck'),
 		$scorePanel = $('#score-panel'),
 		$moveNum = $('.moves'),
@@ -17,9 +18,9 @@ var symbols = ['bus', 'bus', 'bell', 'bell', 'bug', 'bug', 'child', 'child', 'fl
 		$restart = $('.restart'),
 		delay = 800,
 		gameCardsQTY = symbols.length / 2,
-		rank3thumbs = gameCardsQTY + 4, //20 moves lose the third thumb
-		rank2thumbs = gameCardsQTY + 8, //17 moves lose second thumb
-		rank1thumbs = gameCardsQTY + 12; //13 moves lose first thumb
+		rank3thumbs = gameCardsQTY + 4, //Never lose the third thumb
+		rank2thumbs = gameCardsQTY + 5, //16 moves lose second thumb
+		rank1thumbs = gameCardsQTY + 7; //14 moves lose first thumb
 		var c = 0;
 		var t;
 		var timer_is_on = 0;
@@ -100,16 +101,17 @@ function startGame() {
 * @returns {array} - Three thumbs are displayed and the score is 0
 */
 function setRating(moves) {
-	var rating = 3;
+	var rating = rankthumb;
 	if (moves > rank3thumbs && moves < rank2thumbs) {
-		$ratingThumbs.eq(2).removeClass('fa-thumbs-up').addClass('fa-thumbs-up-o');
-		rating = 2;
+		$ratingThumbs.eq(3).removeClass('fa-thumbs-up').addClass('fa-thumbs-up-o');
+		rankthumb = 3;
 	} else if (moves > rank2thumbs && moves < rank1thumbs) {
-		$ratingThumbs.eq(1).removeClass('fa-thumbs-up').addClass('fa-thumbs-up-o');
-		rating = 1;
+		$ratingThumbs.eq(2).removeClass('fa-thumbs-up').addClass('fa-thumbs-up-o');
+		rankthumb = 2;
 	} else if (moves > rank1thumbs) {
-    $ratingThumbs.eq(0).removeClass('fa-thumbs-up').addClass('fa-thumbs-up-o');
-    rating = 0; }
+    $ratingThumbs.eq(1).removeClass('fa-thumbs-up').addClass('fa-thumbs-up-o');
+    rankthumb = 1; 
+  }
 	return { score: rating };
 }
 
@@ -220,7 +222,7 @@ $deck.on('click', '.card:not(".match, .open")', function() {
 		var score = setRating(moves).score;
 		setTimeout(function() {
 			endGame(moves, score);
-		}, 200);
+		}, delay);
   }
 });
 };
