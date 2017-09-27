@@ -17,40 +17,12 @@ var symbols = ['bus', 'bus', 'bell', 'bell', 'bug', 'bug', 'child', 'child', 'fl
 		$restart = $('.restart'),
 		delay = 800,
 		gameCardsQTY = symbols.length / 2,
-		rank3thumbs = gameCardsQTY + 5,
-		rank2thumbs = gameCardsQTY + 10,
-		rank1thumbs = gameCardsQTY + 15;
+		rank3thumbs = gameCardsQTY + 4, //20 moves lose the third thumb
+		rank2thumbs = gameCardsQTY + 8, //17 moves lose second thumb
+		rank1thumbs = gameCardsQTY + 12; //13 moves lose first thumb
 		var c = 0;
 		var t;
 		var timer_is_on = 0;
-
-
-/**
-* @description Timer countdown of 60 sec
-* @param [.click]  - ArrOn click of timer countdown begin
-* @returns [startGame] When countdown rech 0 restart game screen appears
-*/
-/*$("#count").click( function(){
-   var counter = 120;
-   setInterval(function() {
-     counter--;
-      if (counter >= 0) {
-         span = document.getElementById("count");
-         span.innerHTML = counter;
-      }
-      if (counter === 0) {
-        swal({
-		title: 'Out of Time!',
-		confirmButtonColor: '#02ccba',
-		confirmButtonText: 'Need another brain-try!'
-		}).then(function(isConfirm) {
-      if (isConfirm) {
-            startGame();
-         }
-      	});
-       }
-     }, 50);
-});*/
 
 
 /**
@@ -82,6 +54,7 @@ function stopCount() {
     timer_is_on = 0;
 }
 
+
 /**
 * @description Card shuffle Here the cards are shuffled according to this setup and code http://stackoverflow.com/a/2450976
 * @param [array]  - Array is parsed
@@ -111,8 +84,9 @@ function startGame() {
   $deck.empty();
   match = 0;
   moves = 0;
+  score = 0;
   $moveNum.text('0');
-  $ratingThumbs.removeClass('fa-thumbs-up-o').addClass('fa-spinner');
+  $ratingThumbs.removeClass('fa-thumbs-up-o').addClass('fa-spinner').css({'background': '#00f321', 'padding': '3px', 'margin-top': '8px'});
 	for (var i = 0; i < cards.length; i++) {
 		$deck.append($('<li class="card"><i class="fa fa-' + cards[i] + '"></i></li>'))
 	}
@@ -133,7 +107,9 @@ function setRating(moves) {
 	} else if (moves > rank2thumbs && moves < rank1thumbs) {
 		$ratingThumbs.eq(1).removeClass('fa-thumbs-up').addClass('fa-thumbs-up-o');
 		rating = 1;
-	}
+	} else if (moves > rank1thumbs) {
+    $ratingThumbs.eq(0).removeClass('fa-thumbs-up').addClass('fa-thumbs-up-o');
+    rating = 0; }
 	return { score: rating };
 }
 
@@ -156,6 +132,7 @@ function endGame(moves, score) {
 	}).then(function(isConfirm) {
 		if (isConfirm) {
 			startGame();
+      location.reload(true);
 		}
 	})
 }
@@ -177,7 +154,8 @@ $restart.bind('click', function() {
     confirmButtonText: 'Yes, let me hav\'em!'
   }).then(function(isConfirm) {
     if (isConfirm) {
-      startGame().load( '/index.js' );
+      startGame();
+      location.reload(true);
     }
   })
 });
@@ -211,7 +189,7 @@ $deck.on('click', '.card:not(".match, .open")', function() {
 	*/
  	if (opened.length > 1) {
     if (card === opened[0]) {
-      $deck.find('.open').addClass('match animated');
+      $deck.find('.open').addClass('match');
       setTimeout(function() {
         $deck.find('.match').removeClass('open show');
       }, delay);
