@@ -89,13 +89,13 @@ h1 {
 
 #score-panel {
   text-align: left;
-  width: 345px;
-  margin-bottom: 10px;
+  width: 400px;
+  margin-bottom: 8px;
 }
 
 #score-panel .thumbs {
   margin: 0;
-  padding: 0;
+  padding-left: 20px;
   display: inline-block;
   margin: 0 5px 0 0;
 }
@@ -104,10 +104,9 @@ h1 {
   list-style: none;
   display: inline-block;
 }
-#score-panel .restart {
-  padding-left: 200px;
-  cursor: pointer;
-  font-size: 20px; 
+
+.restart:hover {
+  cursor: pointer; 
 }
 
 *::-moz-selection {
@@ -137,6 +136,7 @@ h1 {
 .swal2-select, 
 .swal2-radio, 
 .swal2-checkbox, 
-.swal2-textarea {
+.swal2-textarea,
+.swal2-cancel {
   display: none;
 }
