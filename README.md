@@ -17,6 +17,12 @@ The game board consists of sixteen cards arranged in a grid. The card deck has e
 - Then if the cards don't match, both cards are flipped back and becomes hidden.
 - When all cards have been matched the game is complete.
 
+# Scoring
+
+- After 20 moves you lose the third thumb
+- After 17 moves you lose the second thumb
+- After 13 moves you lose the first thumb
+
 # Features
 
 - A timer displays elapsed time and final time is displayed on the winning screen
