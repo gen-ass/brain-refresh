@@ -24,6 +24,35 @@ var symbols = ['bus', 'bus', 'bell', 'bell', 'bug', 'bug', 'child', 'child', 'fl
 		var t;
 		var timer_is_on = 0;
 
+
+/**
+* @description Timer countdown of 60 sec
+* @param [.click]  - ArrOn click of timer countdown begin
+* @returns [startGame] When countdown rech 0 restart game screen appears
+*/
+/*$("#count").click( function(){
+   var counter = 120;
+   setInterval(function() {
+     counter--;
+      if (counter >= 0) {
+         span = document.getElementById("count");
+         span.innerHTML = counter;
+      }
+      if (counter === 0) {
+        swal({
+		title: 'Out of Time!',
+		confirmButtonColor: '#02ccba',
+		confirmButtonText: 'Need another brain-try!'
+		}).then(function(isConfirm) {
+      if (isConfirm) {
+            startGame();
+         }
+      	});
+       }
+     }, 50);
+});*/
+
+
 /**
 * @description Timer counts up
 * @param [.click]  - On click of timer countdown begin
@@ -167,13 +196,13 @@ var addCardListener = function() {
 * @param {click}  - User clicks in grid
 * @returns {open show} - Card is turned around and kept open.
 */
-$deck.find('click', '.card:not(".match, .open")').on('click', function() {
-	if($('.show').length > 1) { return true; }
+$deck.on('click', '.card:not(".match, .open")', function() {
+  if($('.show').length > 1) { return true; }
 
-	var $this = $(this),
-	card = $this.context.innerHTML;
-  	$this.addClass('open show');
-	opened.push(card);
+  var $this = $(this),
+      card = $this.context.innerHTML;
+  $this.addClass('open show');
+  opened.push(card);
 
     /**
 	* @description Open card: Comparison
@@ -181,20 +210,20 @@ $deck.find('click', '.card:not(".match, .open")').on('click', function() {
 	* @returns {open show} - If the card has same value as in the index then card stays open. If the value is not the same as in index card closes
 	*/
  	if (opened.length > 1) {
-    	if (card === opened[0]) {
-		 $deck.find('.open').addClass('match animated');
-		 setTimeout(function() {
-		 $deck.find('.match').removeClass('open show');
-     	}, delay);
-      	match++;
-	} else {
-	      $deck.find('.open').addClass('notmatch');
-	      setTimeout(function() {
-	      $deck.find('.open');
-     	}, delay / 1.5);
-        setTimeout(function() {
-             $deck.find('.open').removeClass('open show notmatch');
-       }, delay);
+    if (card === opened[0]) {
+      $deck.find('.open').addClass('match animated');
+      setTimeout(function() {
+        $deck.find('.match').removeClass('open show');
+      }, delay);
+      match++;
+    } else {
+      $deck.find('.open').addClass('notmatch');
+      setTimeout(function() {
+        $deck.find('.open');
+      }, delay / 1.5);
+      setTimeout(function() {
+        $deck.find('.open').removeClass('open show notmatch');
+      }, delay);
     }
     opened = [];
     moves++;
