@@ -131,3 +131,12 @@ h1 {
   padding-left: 20%;
   display: block;
 }
+
+
+.swal2-input, 
+.swal2-select, 
+.swal2-radio, 
+.swal2-checkbox, 
+.swal2-textarea {
+  display: none;
+}
