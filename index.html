@@ -15,7 +15,6 @@
 	<body>
 		<div class="responsive-container">
 			<h1>Matching Game</h1>
-			<!-- <span id="count">120 seconds <a href="#" id="startclock">Start your countdown</a></span> -->
 			<button type="button" class="btn btn-primary" onmouseenter="startCount()">Start counter!</button>
 			<input type="text" class="form-control" id="count" disabled>
 			<button type="button" class="btn btn-success" onclick="stopCount()">Pause counter</button>
@@ -29,13 +28,13 @@
 					</ul>
 					<span class="moves">0</span> Moves
 				</div>
-				<div class="md-col-6" id="score-panel">
-					<div class="restart" onclick="resetCount()">Restart &nbsp;
+				<div class="md-col-6">
+					<div class="restart" onclick="stopCount()">Restart &nbsp;
 						<i class="fa fa-repeat"></i>
 					</div>
 				</div>
 			</div>
-		<ul onmouseenter="startCount()" class="deck"></ul>
+		<ul onclick="startCount()" class="deck"></ul>
 	</div>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
